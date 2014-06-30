@@ -369,7 +369,13 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
-		   -mtune=cortex-a9
+		   -marm -march=armv7-a -mtune=cortex-a9 \
+		   -mfpu=neon \
+		   -funswitch-loops -fpredictive-commoning \
+		   -fgcse-after-reload -fipa-cp-clone \
+		   -fmodulo-sched -fmodulo-sched-allow-regmoves \
+		   -pipe -Wno-unused-but-set-variable
+		   
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
