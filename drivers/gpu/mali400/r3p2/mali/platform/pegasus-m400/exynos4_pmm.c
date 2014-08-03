@@ -99,7 +99,7 @@ mali_dvfs_table mali_dvfs[MALI_DVFS_STEPS]={
 			/* step 4 */{533  ,1000000	,1075000   ,95   ,100} };
 #else
 			/* step 0 */{134  ,1000000	, 950000   ,85   , 90},
-			/* step 1 */{400  ,1000000	,1050000   ,85   ,100} };
+			/* step 1 */{267  ,1000000	,1050000   ,85   ,100} };
 #endif
 
 #ifdef EXYNOS4_ASV_ENABLED
@@ -212,7 +212,7 @@ int mali_gpu_vol = 1025000;
 #else
 /* Orion */
 static const mali_bool bis_vpll = MALI_FALSE;
-int mali_gpu_clk = 400;
+int mali_gpu_clk = 267;
 int mali_gpu_vol = 1050000;
 #endif
 
