@@ -52,14 +52,14 @@ struct platform_device s5p_device_tmu = {
 */
 static struct s5p_platform_tmu default_tmu_data __initdata = {
 	.ts = {
-		.stop_1st_throttle  = 78,
-		.start_1st_throttle = 80,
-		.stop_2nd_throttle  = 87,
-		.start_2nd_throttle = 103,
+		.stop_1st_throttle  = 88,
+		.start_1st_throttle = 90,
+		.stop_2nd_throttle  = 97,
+		.start_2nd_throttle = 105,
 		.start_tripping     = 110,
 		.start_emergency    = 120,
-		.stop_mem_throttle  = 80,
-		.start_mem_throttle = 85,
+		.stop_mem_throttle  = 85,
+		.start_mem_throttle = 90,
 	},
 	.cpufreq = {
 		.limit_1st_throttle = 800000,
