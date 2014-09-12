@@ -96,22 +96,22 @@ static unsigned int clkdiv_cpu1[CPUFREQ_LEVEL_END][2] = {
 	/* ARM L0: 1600MHz */
 	{ 5, 0 },
 	
-	/* ARM L0: 1400MHz */
+	/* ARM L1: 1400MHz */
 	{ 5, 0 },
 
-	/* ARM L1: 1200MHz */
+	/* ARM L2: 1200MHz */
 	{ 5, 0 },
 
-	/* ARM L2: 1000MHz */
+	/* ARM L3: 1000MHz */
 	{ 4, 0 },
 
-	/* ARM L3: 800MHz */
+	/* ARM L4: 800MHz */
 	{ 3, 0 },
 
-	/* ARM L4: 500MHz */
+	/* ARM L5: 500MHz */
 	{ 3, 0 },
 
-	/* ARM L5: 200MHz */
+	/* ARM L6: 200MHz */
 	{ 3, 0 },
 };
 
@@ -119,22 +119,22 @@ static unsigned int exynos4_apll_pms_table[CPUFREQ_LEVEL_END] = {
 	/* APLL FOUT L0: 1600MHz */
 	((400<<16)|(6<<8)|(0x1)),
  
-	/* APLL FOUT L0: 1400MHz */
+	/* APLL FOUT L1: 1400MHz */
 	((350<<16)|(6<<8)|(0x1)),
 
-	/* APLL FOUT L1: 1200MHz */
+	/* APLL FOUT L2: 1200MHz */
 	((150<<16)|(3<<8)|(0x1)),
 
-	/* APLL FOUT L2: 1000MHz */
+	/* APLL FOUT L3: 1000MHz */
 	((250<<16)|(6<<8)|(0x1)),
 
-	/* APLL FOUT L3: 800MHz */
+	/* APLL FOUT L4: 800MHz */
 	((200<<16)|(6<<8)|(0x1)),
 
-	/* APLL FOUT L4: 500MHz */
+	/* APLL FOUT L5: 500MHz */
 	((250<<16)|(6<<8)|(0x2)),
 
-	/* APLL FOUT L5: 200MHz */
+	/* APLL FOUT L6: 200MHz */
 	((200<<16)|(6<<8)|(0x3)),
 };
 
@@ -433,8 +433,8 @@ int exynos4210_cpufreq_init(struct exynos_dvfs_info *info)
 	}
 
 	info->mpll_freq_khz = rate;
-	info->pm_lock_idx = L3;
-	info->pll_safe_idx = L2;
+	info->pm_lock_idx = L4;
+	info->pll_safe_idx = L3;
 	info->max_support_idx = max_support_idx;
 	info->min_support_idx = min_support_idx;
 	info->cpu_clk = cpu_clk;
