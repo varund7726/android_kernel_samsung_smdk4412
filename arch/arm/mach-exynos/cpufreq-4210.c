@@ -58,7 +58,7 @@ static struct cpufreq_clkdiv exynos4210_clkdiv_table[] = {
 	{L3, 0},
 	{L4, 0},
 	{L5, 0},
-        {L6, 0},
+	{L6, 0},
 };
 
 static unsigned int clkdiv_cpu0[CPUFREQ_LEVEL_END][7] = {
@@ -70,23 +70,24 @@ static unsigned int clkdiv_cpu0[CPUFREQ_LEVEL_END][7] = {
 	/* ARM L0: 1600MHz */
 	{ 0, 3, 7, 3, 4, 1, 7 },
 	
-	/* ARM L0: 1400MHz */
+	/* ARM L1: 1400MHz */
 	{ 0, 3, 7, 3, 4, 1, 7 },
 
-	/* ARM L1: 1200MHz */
+	/* ARM L2: 1200MHz */
 	{ 0, 3, 7, 3, 4, 1, 7 },
 
-	/* ARM L2: 1000MHz */
+	/* ARM L3: 1000MHz */
 	{ 0, 3, 7, 3, 4, 1, 7 },
 
-	/* ARM L3: 800MHz */
+	/* ARM L4: 800MHz */
 	{ 0, 3, 7, 3, 3, 1, 7 },
 
-	/* ARM L4: 500MHz */
+	/* ARM L5: 500MHz */
 	{ 0, 3, 7, 3, 3, 1, 7 },
 
-	/* ARM L5: 200MHz */
+	/* ARM L6: 200MHz */
 	{ 0, 1, 3, 1, 3, 1, 0 },
+	
 };
 
 static unsigned int clkdiv_cpu1[CPUFREQ_LEVEL_END][2] = {
@@ -156,8 +157,8 @@ static const unsigned int asv_voltage_A[CPUFREQ_LEVEL_END][8] = {
 	 */
 	/* for Dummy:
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
-	*/
-	{ 1425000, 1450000, 1450000, 1400000, 1400000, 1400000, 1400000, 1250000 },
+	 */
+	{ 1350000, 1375000, 1375000, 1325000, 1325000, 1325000, 1325000, 1175000 },
 	{ 1350000, 1350000, 1350000, 1225000, 1225000, 1225000, 1225000, 1175000 },
 	{ 1350000, 1275000, 1275000, 1150000, 1150000, 1150000, 1150000, 1175000 },
 	{ 1300000, 1175000, 1175000, 1050000, 1050000, 1050000, 1050000, 1075000 },
@@ -177,7 +178,7 @@ static const unsigned int asv_voltage_B[CPUFREQ_LEVEL_END][5] = {
 	 * @500	 :
 	 * @200	 :
 	 */
-	{ 1450000, 1457500, 1400000, 1375000, 1325000 },
+	{ 1375000, 1375000, 1325000, 1300000, 1250000 },
 	{ 1325000, 1325000, 1275000, 1250000, 1200000 },
 	{ 1325000, 1275000, 1225000, 1175000, 1150000 },
 	{ 1225000, 1175000, 1125000, 1075000, 1050000 },
@@ -185,6 +186,13 @@ static const unsigned int asv_voltage_B[CPUFREQ_LEVEL_END][5] = {
 	{ 1050000, 1000000, 950000, 950000, 950000 },
 	{ 1025000, 975000, 950000, 950000, 950000 },
 };
+
+ 
+unsigned int get_exynos4210_overclock( void) {
+    return exynos4210_freq_table[max_support_idx].frequency;
+}
+EXPORT_SYMBOL( get_exynos4210_overclock);
+
 
 static void set_clkdiv(unsigned int div_index)
 {
@@ -269,6 +277,11 @@ static void exynos4210_set_frequency(unsigned int old_index,
 				  unsigned int new_index)
 {
 	unsigned int tmp;
+
+	sec_debug_aux_log(SEC_DEBUG_AUXLOG_CPU_BUS_CLOCK_CHANGE,
+			"%s: old_index=%d, new_index=%d(%ps)",
+			__func__, old_index, new_index,
+			__builtin_return_address(0));
 
 	if (old_index > new_index) {
 		if (!exynos4210_pms_change(old_index, new_index)) {

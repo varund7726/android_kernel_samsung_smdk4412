@@ -391,6 +391,44 @@ static int exynos4210_get_ids(struct samsung_asv *asv_info)
 #define PACK_ID				8
 #define PACK_MASK			0x3
 
+static char r_str[64];                                                                                                                                                                                                   
+static unsigned int asv_v;                                                                                                                                                                                      
+#ifdef CONFIG_EXYNOS4_SETUP_THERMAL
+extern int get_exynos4_temp(void); 
+#endif
+#ifdef CONFIG_SEC_THERMISTOR
+extern int u1_adc_temp_getvalue(void);
+#endif
+
+//collect CPU and temp info, by PHJZ @ xda, modified by G.Lewarne @ xda
+extern unsigned int  get_exynos4210_overclock(void);
+char *show_asv(void) {                                                                                                                                                                                                   
+ char *gr="SABCD567";
+ int f, i=(samsung_cpu_id >> PACK_ID) & PACK_MASK, pkg=(asv_v>>16) & 7, hpm=(asv_v>>8)&0xff, ids=asv_v&0xff, ov=(get_exynos4210_overclock()/1000)-1000;                                                                                                                                                                                             
+ switch ((exynos_result_of_asv>>SUPPORT_FREQ_SHIFT)&SUPPORT_FREQ_MASK) {                                                                                                                                                                                            
+  case 1: f=0;
+  case 2: f=2; break;                                                                                                                                                                                                    
+  case 4: f=4; break;                                                                                                                                                                                                    
+  default: f=1111; break;                                                                                                                                                                                                   
+ }                                                                                                                                                                                                                       
+#ifdef CONFIG_SEC_THERMISTOR
+{ int t=u1_adc_temp_getvalue();
+#ifdef CONFIG_EXYNOS4_SETUP_THERMAL
+ sprintf(r_str,"( Max 1.%d GHz VoltGroup:%c CPU:%dc BOARD:%dc )",ov,*(gr+(exynos_result_of_asv&7)),get_exynos4_temp(),t/10);                                                                                                    
+#else
+ sprintf(r_str,"( Freq 1.%d GHz [%d,%d] VoltGroup:%c [%d,%d] BOARD: %d.%dc )",ov,i,pkg,*(gr+(exynos_result_of_asv&7)),hpm,ids,t/10,t%10);                                                                                                   
+#endif
+ }
+#else
+#ifdef CONFIG_EXYNOS4_SETUP_THERMAL
+ sprintf(r_str,"( CPU 1.%d/1.%dGHz [%d,%d] VG:%c [%d,%d] CPU: %dC )",i,pkg,f,ov,*(gr+(exynos_result_of_asv&7)),hpm,ids,get_exynos4_temp());                                                                                                    
+#else
+ sprintf(r_str,"( CPU 1.%d/1.%dGHz [%d,%d] VG:%c [%d,%d] )",i,pkg,f,ov,*(gr+(exynos_result_of_asv&7)),hpm,ids);                                                                                           
+#endif
+#endif
+ return r_str;                                                                                                                                                                                                           
+}
+
 static int exynos4210_asv_store_result(struct samsung_asv *asv_info)
 {
 	unsigned int result_grp;

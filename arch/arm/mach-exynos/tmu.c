@@ -76,6 +76,10 @@ extern int mali_voltage_lock_pop(void);
 #define CONFIG_TC_VOLTAGE /* Temperature compensated voltage */
 #endif
 
+static int real_tmu_temp;                                                                                                                                                                                                
+int get_exynos4_temp(void) { return real_tmu_temp; }                                                                                                                                                                    
+EXPORT_SYMBOL(get_exynos4_temp);
+
 static unsigned int get_curr_temp(struct s5p_tmu_info *info)
 {
 	unsigned char curr_temp_code;
@@ -107,7 +111,7 @@ static unsigned int get_curr_temp(struct s5p_tmu_info *info)
 			"or surrounding temp is low.\n");
 
 	/* compensate and calculate current temperature */
-	temperature = curr_temp_code - info->te1 + TMU_DC_VALUE;
+	real_tmu_temp=temperature = curr_temp_code - info->te1 + TMU_DC_VALUE;
 	if (temperature < 0) {
 		/* if temperature lower than 0 degree, set 0 degree */
 		pr_info("current temp is %d celsius degree.\n"
