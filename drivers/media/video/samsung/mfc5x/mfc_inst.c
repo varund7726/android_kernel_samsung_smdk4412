@@ -257,3 +257,4 @@ int mfc_get_inst_cfg(struct mfc_inst_ctx *ctx, int type, void *arg)
 
 	return ret;
 }
+

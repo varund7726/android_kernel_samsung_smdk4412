@@ -187,3 +187,4 @@ int mfc_set_inst_cfg(struct mfc_inst_ctx *ctx, int type, void *arg);
 int mfc_get_inst_cfg(struct mfc_inst_ctx *ctx, int type, void *arg);
 
 #endif /* __MFC_INST_H */
+
