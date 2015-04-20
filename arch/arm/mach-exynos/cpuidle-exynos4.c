@@ -10,6 +10,7 @@
 
 #include <linux/kernel.h>
 #include <linux/init.h>
+#include <linux/cpu_pm.h>
 #include <linux/cpuidle.h>
 #include <linux/io.h>
 #include <linux/suspend.h>
@@ -568,6 +569,8 @@ static int exynos4_enter_core0_aftr(struct cpuidle_device *dev,
 
 	local_irq_disable();
 
+	cpu_pm_enter();
+
 	if (log_en)
 		pr_info("+++aftr\n");
 
@@ -630,6 +633,8 @@ early_wakeup:
 	if (log_en)
 		pr_info("---aftr\n");
 
+	cpu_pm_exit();
+
 	local_irq_enable();
 	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
 		    (after.tv_usec - before.tv_usec);
@@ -663,12 +668,14 @@ static int exynos4_enter_core0_lpa(struct cpuidle_device *dev,
 #endif
 	local_irq_disable();
 
+	cpu_pm_enter();
+
 #if defined(CONFIG_INTERNAL_MODEM_IF) || defined(CONFIG_SAMSUNG_PHONE_TTY)
 	gpio_set_value(GPIO_PDA_ACTIVE, 0);
 #endif
 
 	if (log_en)
-		pr_info("+++lpa\n");
+		pr_debug("+++lpa\n");
 
 	do_gettimeofday(&before);
 
@@ -758,10 +765,12 @@ early_wakeup:
 	do_gettimeofday(&after);
 
 	if (log_en)
-		pr_info("---lpa\n");
+		pr_debug("---lpa\n");
 #if defined(CONFIG_INTERNAL_MODEM_IF) || defined(CONFIG_SAMSUNG_PHONE_TTY)
 	gpio_set_value(GPIO_PDA_ACTIVE, 1);
 #endif
+
+	cpu_pm_exit();
 
 	local_irq_enable();
 	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +

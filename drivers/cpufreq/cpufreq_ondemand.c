@@ -814,9 +814,11 @@ static int should_io_be_busy(void)
 		return 1;
 #endif
 
+/*
 #if defined(CONFIG_ARCH_EXYNOS)
 	return 1;
 #endif
+*/
 
 	return 0;
 }

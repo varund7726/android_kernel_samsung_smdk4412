@@ -1119,7 +1119,7 @@ out:
 	if (err > 0) {
 		proc_sid_connector(group_leader);
 		sched_autogroup_create_attach(group_leader);
-			}
+	}
 	return err;
 }
 
